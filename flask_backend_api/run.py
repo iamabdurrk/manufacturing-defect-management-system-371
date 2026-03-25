@@ -1,4 +1,8 @@
+import os
+
 from app import app
 
 if __name__ == "__main__":
-    app.run()
+    host = os.getenv("HOST", "0.0.0.0")
+    port = int(os.getenv("PORT", "3001"))
+    app.run(host=host, port=port)
