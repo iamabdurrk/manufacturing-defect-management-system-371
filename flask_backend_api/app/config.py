@@ -59,7 +59,9 @@ class Settings:
         upload_dir = _get_env("UPLOAD_DIR", "./uploads") or "./uploads"
         max_content_length = int(_get_env("MAX_CONTENT_LENGTH", "15728640") or "15728640")
 
-        cors_raw = _get_env("CORS_ORIGINS", "")
+        # NOTE: Orchestration environments sometimes provide ALLOWED_ORIGINS instead of CORS_ORIGINS.
+        # Support both to avoid preview/runtime CORS breakage.
+        cors_raw = _get_env("CORS_ORIGINS", "") or _get_env("ALLOWED_ORIGINS", "") or ""
         cors_origins = [o.strip() for o in cors_raw.split(",") if o.strip()]
 
         return Settings(
