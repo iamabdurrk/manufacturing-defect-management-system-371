@@ -1,0 +1,10 @@
+Flask==3.0.2
+flask-cors==4.0.0
+pymongo==4.6.2
+PyJWT==2.8.0
+Werkzeug==3.0.1
+marshmallow==3.21.1
+python-dateutil==2.9.0.post0
+reportlab==4.1.0
+gunicorn==21.2.0
+python-dotenv==1.0.1
