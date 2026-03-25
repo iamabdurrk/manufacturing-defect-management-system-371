@@ -37,9 +37,23 @@ class UploadsService:
         content_type = file.mimetype or "application/octet-stream"
 
         meta = self._uploads.insert(filename=safe, content_type=content_type, size=size, path=full_path)
-        base = current_app.config.get("BACKEND_URL", "").rstrip("/")
-        url = f"{base}{current_app.config.get('PUBLIC_UPLOADS_ROUTE', '/uploads')}/{str(meta['_id'])}"
-        return serialize_doc({"file_id": meta["_id"], "filename": safe, "content_type": content_type, "size": size, "url": url})
+
+        # Build the public URL using config so it can be overridden per environment.
+        # If BACKEND_URL is not set, return a relative URL (works when frontend is on same origin/proxied).
+        base = (current_app.config.get("BACKEND_URL") or "").rstrip("/")
+        public_route = current_app.config.get("PUBLIC_UPLOADS_ROUTE", "/uploads")
+        rel = f"{public_route}/{str(meta['_id'])}"
+        url = f"{base}{rel}" if base else rel
+
+        return serialize_doc(
+            {
+                "file_id": meta["_id"],
+                "filename": safe,
+                "content_type": content_type,
+                "size": size,
+                "url": url,
+            }
+        )
 
     def get_file_meta(self, file_id: str) -> dict:
         doc = self._uploads.find_by_id(ObjectId(file_id))

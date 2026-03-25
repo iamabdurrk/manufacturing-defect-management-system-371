@@ -12,6 +12,11 @@ class Config:
     OPENAPI_SWAGGER_UI_PATH = ""
     OPENAPI_SWAGGER_UI_URL = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
 
+    # Base URL
+    # Used to generate absolute URLs (e.g., uploads) returned to the frontend.
+    # Example: https://api.example.com
+    BACKEND_URL = os.getenv("BACKEND_URL", "")
+
     # CORS
     ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "*")
     ALLOWED_HEADERS = os.getenv("ALLOWED_HEADERS", "Content-Type,Authorization")
